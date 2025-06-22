@@ -3,24 +3,31 @@ services:
     image: influxdb:2.6
     container_name: c1vh-influxdb
     restart: unless-stopped
-    environment:
-      - INFLUXDB_ADMIN_USER=${INFLUX_ADMIN_USER}
-      - INFLUXDB_ADMIN_PASSWORD=${INFLUX_ADMIN_PASSWORD}
-      - INFLUXDB_BUCKET=${INFLUX_BUCKET}
-      - INFLUXDB_ORG=${INFLUX_ORG}
+    env_file:
+      - ../.env
     volumes:
       - influx_data:/var/lib/influxdb2
     ports:
       - "8086:8086"
     networks:
       - monitor_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      retries: 5
 
   telegraf:
     image: telegraf:1.24
     container_name: c1vh-telegraf
     restart: unless-stopped
+    env_file:
+      - ../.env
     volumes:
       - ./telegraf/config.ini:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      influxdb:
+        condition: service_healthy
     networks:
       - monitor_net
 
