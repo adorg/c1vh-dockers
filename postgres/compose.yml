@@ -3,10 +3,8 @@ services:
     image: postgres:latest
     container_name: c1vh-postgres
     restart: unless-stopped
-    env_file:
-      - ../.env
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - db_net
 
@@ -25,5 +23,5 @@ networks:
     name: c1vh_db_net
 
 volumes:
-  pg_data:
-
+  postgres_data:
+    name: postgres_data

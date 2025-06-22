@@ -3,8 +3,6 @@ services:
     image: influxdb:latest
     container_name: c1vh-influxdb
     restart: unless-stopped
-    env_file:
-      - ../.env
     volumes:
       - influx_data:/var/lib/influxdb2
     ports:
@@ -15,25 +13,40 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
       interval: 10s
       retries: 5
+    environment:
+      - INFLUX_ADMIN_USER
+      - INFLUX_ADMIN_PASSWORD
+      - INFLUX_ADMIN_TOKEN
+      - INFLUX_ORG
+      - INFLUX_BUCKET
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_ADMIN_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_ADMIN_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_ADMIN_TOKEN}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
 
   telegraf:
     image: telegraf:latest
     container_name: c1vh-telegraf
     restart: unless-stopped
     environment:
+      - INFLUX_ADMIN_TOKEN
+      - INFLUX_ORG
+      - INFLUX_BUCKET
       - HOST_PROC=/hostfs/proc
       - HOST_SYS=/hostfs/sys
       - HOST_ETC=/hostfs/etc
-    env_file:
-      - ../.env
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /dev:/dev:ro
       - /etc:/hostfs/etc:ro
       - /proc:/hostfs/proc:ro
+      - /run/udev:/run/udev:ro
       - /sys:/hostfs/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    user: root
+    group_add:
+      - ${DOCKER_GID}
     depends_on:
       influxdb:
         condition: service_healthy
@@ -47,4 +60,4 @@ networks:
 
 volumes:
   influx_data:
-
+    name: influx_data
