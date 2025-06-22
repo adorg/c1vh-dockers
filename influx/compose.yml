@@ -20,11 +20,20 @@ services:
     image: telegraf:latest
     container_name: c1vh-telegraf
     restart: unless-stopped
+    environment:
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_ETC=/hostfs/etc
     env_file:
       - ../.env
     volumes:
-      - ./telegraf/config.ini:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /dev:/dev:ro
+      - /etc:/hostfs/etc:ro
+      - /proc:/hostfs/proc:ro
+      - /sys:/hostfs/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    user: root
     depends_on:
       influxdb:
         condition: service_healthy
