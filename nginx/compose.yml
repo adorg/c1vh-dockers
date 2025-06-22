@@ -5,22 +5,11 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/sites:/etc/nginx/sites
+      - ./conf.d:/etc/nginx/conf.d
+      - ./sites:/etc/nginx/sites
       - ./certs:/etc/nginx/certs
     depends_on:
       - flask-app
-    networks:
-      - app_net
-
-  flask-app:
-    image: python:3.9
-    volumes:
-      - ./flask-app:/app
-    working_dir: /app
-    command: >
-      sh -c "pip install flask uwsgi &&
-             uwsgi --http :5000 --wsgi-file app.py --callable app"
     networks:
       - app_net
 
@@ -28,3 +17,4 @@ networks:
   app_net:
     driver: bridge
     name: c1vh_app_net
+    external: true
