@@ -1,0 +1,17 @@
+services:
+  3x-ui:
+    image: ghcr.io/mhsanaei/3x-ui:latest
+    container_name: c1vh-3x-ui
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./log:/var/log/xray
+      - ./db:/etc/x-ui
+      - ./cert:/root/cert
+    environment:
+      - XRAY_VMESS_AEAD_FORCED=false
+
+networks:
+  vpn_net:
+    name: c1vh_vpn_net
+

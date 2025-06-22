@@ -1,0 +1,33 @@
+services:
+  influxdb:
+    image: influxdb:2.6
+    container_name: c1vh-influxdb
+    restart: unless-stopped
+    environment:
+      - INFLUXDB_ADMIN_USER=${INFLUX_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUX_ADMIN_PASSWORD}
+      - INFLUXDB_BUCKET=${INFLUX_BUCKET}
+      - INFLUXDB_ORG=${INFLUX_ORG}
+    volumes:
+      - influx_data:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    networks:
+      - monitor_net
+
+  telegraf:
+    image: telegraf:1.24
+    container_name: c1vh-telegraf
+    restart: unless-stopped
+    volumes:
+      - ./telegraf/config.ini:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - monitor_net
+
+networks:
+  monitor_net:
+    external: true
+
+volumes:
+  influx_data:
+
