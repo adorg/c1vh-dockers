@@ -24,6 +24,7 @@ services:
 networks:
   db_net:
     external: true
+    name: c1vh_db_net
 
 volumes:
   pg_data:

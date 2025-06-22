@@ -27,6 +27,7 @@ services:
 networks:
   monitor_net:
     external: true
+    name: c1vh_monitor_net
 
 volumes:
   influx_data:
