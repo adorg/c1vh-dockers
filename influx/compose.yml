@@ -1,6 +1,6 @@
 services:
   influxdb:
-    image: influxdb:2.6
+    image: influxdb:latest
     container_name: c1vh-influxdb
     restart: unless-stopped
     env_file:
@@ -17,7 +17,7 @@ services:
       retries: 5
 
   telegraf:
-    image: telegraf:1.24
+    image: telegraf:latest
     container_name: c1vh-telegraf
     restart: unless-stopped
     env_file:
