@@ -6,7 +6,7 @@ CONTAINER_NAME="tottalbattle_db"
 DB_USER="tottalbattle"
 DB_NAME="tottalbattle"
 # Имя файла дампа
-DUMP_FILE="../../tottalbattle.bak/db.dump"
+DUMP_FILE="../../tb_pgsql_backup/db.dump"
 LOG_FILE="restore_$(date +%F_%H-%M-%S).log"
 
 # Проверяем, существует ли файл дампа
