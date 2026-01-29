@@ -1,15 +1,18 @@
 services:
   nginx:
     image: nginx:latest
+    container_name: c1vh-nginx
     ports:
       - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
+      #  - "0.0.0.0:443:443"
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ./sites:/etc/nginx/sites
-      - ./certs:/etc/nginx/certs
-    depends_on:
-      - flask-app
+      - ./public:/public
+      # - ./certs:/etc/nginx/certs
+      - /var/www/tottalbattle.com/beta2/app/static:/static:ro
+      - /run/flask-beta2:/run/flask-beta2
+      - /var/log/nginx:/var/log/nginx
     networks:
       - app_net
 
@@ -17,4 +20,4 @@ networks:
   app_net:
     driver: bridge
     name: c1vh_app_net
-    external: true
+    # external: true

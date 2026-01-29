@@ -1,2 +1,5 @@
 .env
-/vpn/db
+/timescale/data/
+/timescale/restore*.log
+/vpn/db/
+/vpn/cert/
