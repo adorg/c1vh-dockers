@@ -3,3 +3,4 @@
 /timescale/restore*.log
 /vpn/db/
 /vpn/cert/
+/vpn/log/
