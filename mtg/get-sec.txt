@@ -1,0 +1,1 @@
+docker run --rm nineseconds/mtg:2 generate-secret --hex google.com
