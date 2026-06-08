@@ -1,0 +1,20 @@
+services:
+  mtg:
+    image: nineseconds/mtg:2
+    container_name: mtg
+    restart: unless-stopped
+
+    ports:
+      - "8443:3128"
+
+    volumes:
+      - ./config.toml:/config.toml:ro
+
+    command:
+      - run
+      - /config.toml
+
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
