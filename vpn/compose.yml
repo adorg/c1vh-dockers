@@ -12,6 +12,10 @@ services:
     environment:
       XRAY_VMESS_AEAD_FORCED: "false"
       XUI_ENABLE_FAIL2BAN: "true"
+    # cap_add:
+    #  - NET_ADMIN
+    # devices:
+    #  - /dev/net/tun:/dev/net/tun
 
 networks:
   vpn_net:
